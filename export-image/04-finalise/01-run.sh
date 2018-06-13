@@ -32,7 +32,16 @@ rm -f "${ROOTFS_DIR}"/usr/share/icons/*/icon-theme.cache
 
 rm -f "${ROOTFS_DIR}/var/lib/dbus/machine-id"
 
+rm -f "${ROOTFS_DIR}/etc/machine-id"
+touch "${ROOTFS_DIR}/etc/machine-id"
+
 true > "${ROOTFS_DIR}/etc/machine-id"
+
+rm -f "${ROOTFS_DIR}/etc/udev/70-persistent-net.rules"
+rm -f "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
+rm -f "${ROOTFS_DIR}/etc/sysctl.d/disable_ipv6.conf"
+rm -f "${ROOTFS_DIR}/etc/profile.d/sshpasswd.sh"
+
 
 ln -nsf /proc/mounts "${ROOTFS_DIR}/etc/mtab"
 

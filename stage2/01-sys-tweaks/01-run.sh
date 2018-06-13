@@ -11,12 +11,18 @@ install -m 644 files/console-setup   	"${ROOTFS_DIR}/etc/default/"
 
 install -m 755 files/rc.local		"${ROOTFS_DIR}/etc/"
 
+install -m 644 files/rpi-bootconfig            "${ROOTFS_DIR}/etc/default/"
+install -m 644 files/journald.conf             "${ROOTFS_DIR}/etc/systemd/"
+
 on_chroot << EOF
 systemctl disable hwclock.sh
 systemctl disable nfs-common
 systemctl disable rpcbind
 systemctl disable ssh
-systemctl enable regenerate_ssh_host_keys
+EOF
+
+on_chroot << EOF
+${ROOTFS_DIR}/usr/lib/piaware-support/rpi-bootconfig update
 EOF
 
 if [ "${USE_QEMU}" = "1" ]; then
@@ -39,6 +45,8 @@ done
 for GRP in adm dialout cdrom audio users sudo video games plugdev input gpio spi i2c netdev; do
   adduser pi $GRP
 done
+
+adduser pi piaware
 EOF
 
 on_chroot << EOF
